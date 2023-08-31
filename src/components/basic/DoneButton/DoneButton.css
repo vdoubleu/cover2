@@ -1,0 +1,31 @@
+.doneButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* circle */
+    border-radius: 50%;
+
+    /* size */
+    width: 135px;
+    height: 135px;
+}
+
+.doneButton-text {
+    color: #fff;
+    text-align: center;
+    font-family: Inter;
+    font-size: 2.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.doneButton-enabled {
+    background-color: #0A0046;
+}
+
+.doneButton-disabled {
+    background-color: #4E4E4E;
+}

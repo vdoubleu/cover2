@@ -1,0 +1,18 @@
+.review-subtitle {
+    margin-top: 4rem;
+}
+
+.review-email {
+    margin-bottom: 2rem;
+}
+
+.review-information-body {
+    color: #000000;
+}
+
+.review-button {
+    display: flex;
+    justify-content: center;
+
+    margin: 2rem;
+}

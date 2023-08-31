@@ -1,0 +1,66 @@
+.page {
+    width: 100vw;
+    height: 100vh;
+}
+
+.page-full {
+    width: 100vw;
+    height: 100%;
+}
+
+.page-header {
+    width: 100%;
+    padding: 0px 0rem;
+}
+
+.page-header-multi {
+    display: flex;
+}
+
+.page-header-logo {
+    height: 50px;
+    margin-left: 10vw;
+    margin-top: 10px;
+}
+
+.page-title {
+    width: 100%;
+    height: 15%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-subtitle {
+    width: calc(100% - 3.76rem);
+    height: 15%;
+
+    padding: 0px 1.88rem;
+}
+
+.page-subtitle-slim {
+    height: auto;
+}
+
+.page-subtitle-text {
+    width: 60%;
+    margin: 10px 0px;
+
+    color: #000000;
+    
+    font-family: Inter;
+    font-size: 1.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.page-body {
+    width: calc(100% - 3.76rem);
+    padding: 0px 1.88rem;
+}
+
+.page-body-text {
+
+}

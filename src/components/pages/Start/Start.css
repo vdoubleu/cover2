@@ -1,0 +1,19 @@
+.start-input {
+    margin-top: 3rem;
+}
+
+.start-time-wrapper {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.start-time {
+    color: #000;
+}
+
+.start-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+}

@@ -1,0 +1,30 @@
+.floor-title {
+    margin-top: 3rem;
+}
+
+.floor-title-text {
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 1.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.floor-input {
+    margin-top: 4rem;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    row-gap: 1.5rem;
+}
+
+.floor-button {
+    margin-top: 5rem;
+
+    display: flex;
+    justify-content: center;
+}
