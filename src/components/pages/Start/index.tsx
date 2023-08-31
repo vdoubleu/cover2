@@ -3,11 +3,18 @@ import { useState, useEffect } from "react";
 import BackButton from "../../basic/BackButton";
 import DoneButton from "../../basic/DoneButton";
 import SimpleInput from "../../basic/SimpleInput";
+import type { CoverageState } from "../PageManager";
 import logoText from "/assets/Logo-name.svg";
 import "../common/common.css";
 import "./Start.css";
 
-function Start(props) {
+export type StartProps = {
+    coverageState: CoverageState,
+    setCoverageState: (coverageState: CoverageState) => void,
+    goToPage: (page: string) => void,
+}
+
+function Start(props: StartProps) {
     const [currentTime, setCurrentTime] = useState(new Date());
     const [coverageBuddy, setCoverageBuddy] = useState("");
 

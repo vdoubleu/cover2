@@ -7,12 +7,24 @@ import Review from "../Review";
 import Done from "../Done";
 import Floor from "../Floor";
 
-function PageManager() {
-    const [currPage, setCurrPage] = useState("home");
-    const [coverageState, setCoverageState] = useState({});
+export type CoverageFloorState = {
+    [key: string]: number | string
+}
 
-    const pageMap = {
-        "home": (<Home goToPage={goToPage} />),
+export type CoverageState = {
+    metadata?: {
+        coverageBuddy: string,
+        startTime: number,
+    },
+    [key: string]: CoverageFloorState | undefined
+}
+
+function PageManager() {
+    const [currPage, setCurrPage] = useState<string>("home");
+    const [coverageState, setCoverageState] = useState<CoverageState>({});
+
+    const pageMap: { [key: string]: JSX.Element; } = {
+        "home": (<Home goToPage={goToPage} setCoverageState={setCoverageState} />),
         "setup": (<Setup goToPage={goToPage} />),
         "start": (<Start goToPage={goToPage} setCoverageState={setCoverageState} coverageState={coverageState} />),
         "review": (<Review goToPage={goToPage} setCoverageState={setCoverageState} coverageState={coverageState} />),

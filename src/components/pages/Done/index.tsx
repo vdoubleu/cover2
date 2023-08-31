@@ -3,7 +3,11 @@ import logoText from "/assets/Logo-name.svg";
 import "../common/common.css";
 import "./Done.css";
 
-function Done(props) {
+export type DoneProps = {
+    goToPage: (page: string) => void;
+}
+
+function Done(props: DoneProps) {
     function returnHome() {
         props.goToPage("home");
     }

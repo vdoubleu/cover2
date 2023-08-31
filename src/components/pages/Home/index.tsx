@@ -6,7 +6,12 @@ import settingsIcon from "/assets/settings-icon.png";
 import "./Home.css";
 import "../common/common.css";
 
-function Home(props) {
+export type HomeProps = {
+    goToPage: (page: string) => void;
+    setCoverageState: (coverageState: any) => void;
+}
+
+function Home(props: HomeProps) {
     const [isSetup, setIsSetup] = useState(false);
 
     useEffect(() => {
@@ -34,6 +39,7 @@ function Home(props) {
 
     function buttonOnClick() {
         if (isSetup) {
+            props.setCoverageState({});
             props.goToPage("start");
         } else {
             props.goToPage("setup");

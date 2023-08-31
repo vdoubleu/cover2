@@ -3,11 +3,18 @@ import { useState, useEffect } from 'react';
 import BackButton from "../../basic/BackButton";
 import DoneButton from "../../basic/DoneButton";
 import FloorInfo from "../PageManager/FloorInfo.ts";
+import type { CoverageState, CoverageFloorState } from "../PageManager";
 import logoText from "/assets/Logo-name.svg";
 import "../common/common.css";
 import "./Review.css";
 
-function Review(props) {
+export type ReviewProps = {
+    coverageState: CoverageState;
+    setCoverageState: (coverageState: CoverageState) => void;
+    goToPage: (pageName: string) => void;
+}
+
+function Review(props: ReviewProps) {
     const [endTime, setEndTime] = useState(new Date());
 
     useEffect(() => {
@@ -36,7 +43,7 @@ function Review(props) {
     })();
 
     const coverageInfo = (() => {
-        const coverageMetadata = props.coverageState["metadata"];
+        const coverageMetadata = props.coverageState.metadata;
 
         if (!coverageMetadata || !coverageMetadata.coverageBuddy || !coverageMetadata.startTime) {
             return null;
@@ -50,6 +57,11 @@ function Review(props) {
     }
 
     const sendEmail = () => {
+        if (!userInfo || !coverageInfo) {
+            alert("Something went wrong. Please contact VW for help. Missing userinfo or coverageinfo");
+            return;
+        }
+
         fetch("https://api.emailjs.com/api/v1.0/email/send", {
             method: "POST",
             headers: {
@@ -80,40 +92,13 @@ function Review(props) {
         });
     }
 
-    const roundMinutes = (oldDate) => {
+    const roundMinutes = (oldDate: Date) => {
         const date = new Date(oldDate);
         date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
         date.setMinutes(0, 0, 0); // Resets also seconds and milliseconds
 
         return date;
     }
-
-    const startTime = new Date(coverageInfo.startTime);
-    const startTimeRounded = roundMinutes(startTime);
-
-    const floorInfoBlocks = Object.keys(FloorInfo).map((floorNameWithoutReview) => {
-        const floorInfo = FloorInfo[floorNameWithoutReview];
-
-        const coverageDataForFloor = props.coverageState[floorNameWithoutReview];
-
-        const floorRooms = floorInfo.rooms.map((room) => (
-            `${floorInfo.name} ${room}: ${coverageDataForFloor[room]}\n`
-        )).reduce((prev, curr) => prev + curr, "");
-        
-        const notes = coverageDataForFloor["notes"] ? `${floorInfo.name} Notes:\n${coverageDataForFloor["notes"]}\n` : "";
-
-        return `${floorRooms}${notes}\n`;
-    }).reduce((prev, curr) => prev + curr, "");
-
-    const coverageInfoFull = (() => {
-        const title = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n\n`;
-
-        const time = `Time: ${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n`;
-        const date = `Date: ${startTime.toLocaleDateString()}\n`;
-        const CAs = `CAs on Sweep: ${userInfo.name} and ${coverageInfo.coverageBuddy}\n\n`;
-
-        return title + time + date + CAs + floorInfoBlocks;
-    })();
 
     if (!userInfo || !coverageInfo) {
         return (
@@ -134,6 +119,37 @@ function Review(props) {
             </div>
         );
     }
+
+    const startTime = new Date(coverageInfo.startTime);
+    const startTimeRounded = roundMinutes(startTime);
+
+    const floorInfoBlocks = Object.keys(FloorInfo).map((floorNameWithoutReview) => {
+        const floorInfo = FloorInfo[floorNameWithoutReview];
+
+        const coverageDataForFloor: CoverageFloorState | undefined = props.coverageState[floorNameWithoutReview];
+
+        if (!coverageDataForFloor) {
+            return "";
+        }
+
+        const floorRooms = floorInfo.rooms.map((room: string) => (
+            `${floorInfo.name} ${room}: ${coverageDataForFloor[room]}\n`
+        )).reduce((prev: string, curr: string) => prev + curr, "");
+        
+        const notes = coverageDataForFloor["notes"] ? `${floorInfo.name} Notes:\n${coverageDataForFloor["notes"]}\n` : "";
+
+        return `${floorRooms}${notes}\n`;
+    }).reduce((prev, curr) => prev + curr, "");
+
+    const coverageInfoFull = (() => {
+        const title = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n\n`;
+
+        const time = `Time: ${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n`;
+        const date = `Date: ${startTime.toLocaleDateString()}\n`;
+        const CAs = `CAs on Sweep: ${userInfo.name} and ${coverageInfo.coverageBuddy}\n\n`;
+
+        return title + time + date + CAs + floorInfoBlocks;
+    })();
 
     return (
         <div className="page-full">

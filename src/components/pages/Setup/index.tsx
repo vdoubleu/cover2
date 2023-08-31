@@ -7,7 +7,11 @@ import logoText from "/assets/Logo-name.svg";
 import "../common/common.css";
 import "./Setup.css";
 
-function Setup(props) {
+export type SetupProps = {
+    goToPage: (page: string) => void;
+}
+
+function Setup(props: SetupProps) {
     const [isSetup, setIsSetup] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [email, setEmail] = useState("");

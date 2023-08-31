@@ -1,4 +1,11 @@
-const FloorInfo = {
+export type SingleFloorInfo = {
+    prev: string,
+    next: string,
+    name: string,
+    rooms: string[],
+}
+
+const FloorInfo: { [key: string]: SingleFloorInfo; } = {
     "floor-10-West": {
         "prev": "start",
         "next": "floor-10-East",

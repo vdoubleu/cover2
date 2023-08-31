@@ -4,6 +4,7 @@ import DoneButton from "../../basic/DoneButton";
 import SimpleInput from "../../basic/SimpleInput";
 import MultiLineInput from "../../basic/MultiLineInput";
 import FloorInfo from "../PageManager/FloorInfo.ts";
+import type { CoverageState, CoverageFloorState } from "../PageManager";
 import logoText from "/assets/Logo-name.svg";
 import "../common/common.css";
 import "./Floor.css";
@@ -13,23 +14,25 @@ export type FloorProps = {
     floorNum: number;
     floorSide: string;
     isReview: boolean;
-    coverageState: object;
-    setCoverageState: (coverageState: object) => void;
+    coverageState: CoverageState;
+    setCoverageState: (coverageState: CoverageState) => void;
 }
 
+export type FloorState = { [key: string]: string };
+
 function Floor(props: FloorProps) {
-    const [floorState, setFloorState] = useState({});
+    const [floorState, setFloorState] = useState<FloorState>({});
 
     const currFloorWithoutReview = `floor-${props.floorNum}-${props.floorSide}`;
 
     useEffect(() => {
         const floorRooms = FloorInfo[currFloorWithoutReview].rooms;
-        const floorCoverage = props.coverageState[currFloorWithoutReview];
+        const floorCoverage: CoverageFloorState | undefined = props.coverageState[currFloorWithoutReview];
 
         if (floorCoverage) {
-            setFloorState(floorCoverage);
+            setFloorState(floorCoverage as FloorState);
         } else {
-            const newFloorState = {};
+            const newFloorState: FloorState = {};
             floorRooms.forEach((room) => {
                 newFloorState[room] = "";
             });
@@ -89,7 +92,7 @@ function Floor(props: FloorProps) {
 
     const inputFields = (() => {
         const floorRooms = FloorInfo[currFloorWithoutReview].rooms;
-        const inputFields = floorRooms.map((room) => {
+        const inputFields = floorRooms.map((room: string) => {
             return (
                 <SimpleInput
                     key={room}

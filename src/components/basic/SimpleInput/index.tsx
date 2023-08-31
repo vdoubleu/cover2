@@ -16,8 +16,8 @@ function SimpleInput(props: SimpleInputProps) {
 
     return (
         <div className="simpleInput-wrapper">
-            <label className="simpleInput-label" htmlFor={name}>{props.labelText}</label>
-            <input className="simpleInput-input" type={inputType} name={name} pattern={pattern}  inputMode={inputMode} onChange={props.onChange} value={props.value} />
+            <label className="simpleInput-label" htmlFor={props.name}>{props.labelText}</label>
+            <input className="simpleInput-input" type={inputType} name={props.name} pattern={pattern}  inputMode={inputMode} onChange={props.onChange} value={props.value} />
         </div>
     );
 }
