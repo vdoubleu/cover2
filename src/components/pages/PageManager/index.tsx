@@ -7,6 +7,8 @@ import Review from "../Review";
 import Done from "../Done";
 import Floor from "../Floor";
 
+import { disableScroll, enableScroll } from "./ScrollToggle";
+
 export type CoverageFloorState = {
     [key: string]: number | string
 }
@@ -31,8 +33,8 @@ function PageManager() {
         "done": (<Done goToPage={goToPage} />),
     }
 
-    function goToPage(page: string) {
-        setCurrPage(page);
+    function goToPage(toPage: string) {
+        setCurrPage(toPage);
     }
 
     const page = ((currPage: string) => {
@@ -54,6 +56,12 @@ function PageManager() {
 
         return pageMap[currPage];
     })(currPage);
+
+    if (currPage.startsWith("floor-3") || currPage === "review") {
+        enableScroll();
+    } else {
+        disableScroll();
+    }
 
     return (
         <>
