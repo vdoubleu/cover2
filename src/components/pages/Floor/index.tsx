@@ -123,6 +123,7 @@ function Floor(props: FloorProps) {
             <div className="page-header page-header-multi">
                 <BackButton onClick={handleBack} />
                 <img src={logoText} alt="Logo" className="page-header-logo" />
+                <div className="page-back-filler" />
             </div>
 
             <div className="floor-title">

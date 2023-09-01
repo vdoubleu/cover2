@@ -1,5 +1,5 @@
 .floor-title {
-    margin-top: 3rem;
+    margin-top: 3vh;
 }
 
 .floor-title-text {
@@ -13,7 +13,7 @@
 }
 
 .floor-input {
-    margin-top: 4rem;
+    margin-top: 4vh;
 
     display: flex;
     justify-content: center;
@@ -23,7 +23,8 @@
 }
 
 .floor-button {
-    margin-top: 5rem;
+    margin-top: 5vh;
+    padding-bottom: 4vh;
 
     display: flex;
     justify-content: center;

@@ -62,6 +62,13 @@ function Review(props: ReviewProps) {
             return;
         }
 
+        if (import.meta.env.VITE_REACT_APP_DEV) {
+            console.log("Email sent!");
+            props.setCoverageState({});
+            props.goToPage("done");
+            return;
+        }
+
         fetch("https://api.emailjs.com/api/v1.0/email/send", {
             method: "POST",
             headers: {
@@ -156,6 +163,7 @@ function Review(props: ReviewProps) {
             <div className="page-header page-header-multi">
                 <BackButton onClick={handleBack} />
                 <img src={logoText} alt="Logo" className="page-header-logo" />
+                <div className="page-back-filler" />
             </div>
 
             <div className="page-subtitle review-subtitle">

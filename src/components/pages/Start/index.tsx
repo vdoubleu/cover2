@@ -51,7 +51,7 @@ function Start(props: StartProps) {
             </div>
 
             <div className="page-title">
-                <img src={logoText} alt="Logo" className="logo" />
+                <img src={logoText} alt="Logo" className="page-logo" />
             </div>
 
             <div className="page-subtitle"> 

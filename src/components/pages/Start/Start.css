@@ -3,7 +3,7 @@
 }
 
 .start-time-wrapper {
-    margin-top: 4rem;
+    margin-top: 7vh;
     display: flex;
     justify-content: center;
 }
@@ -15,5 +15,5 @@
 .start-button {
     display: flex;
     justify-content: center;
-    margin-top: 4rem;
+    margin-top: 6vh;
 }

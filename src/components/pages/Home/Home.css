@@ -15,7 +15,8 @@
     filter: invert(0.8);
 
     position: absolute;
-    right: 0px;
+    right: 10px;
+    top: 10px;
 }
 
 .home-logo {
@@ -26,7 +27,7 @@
 }
 
 .home-title {
-    margin-top: 8rem;
+    margin-top: 12vh;
     width: 100%;
 
     color: #000;
@@ -34,7 +35,7 @@
 }
 
 .home-button {
-    margin-top: 5rem;
+    margin-top: 6vh;
     width: 100%;
 
     display: flex;
