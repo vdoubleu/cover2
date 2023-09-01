@@ -72,7 +72,7 @@ function Setup(props: SetupProps) {
                 {
                     isSetup 
                     ? (<h3> Here you may update any of your saved values </h3>)
-                    : (<h3> This is only for your first time and will be saved. You can update this later in the settings. </h3>)
+                    : (<h3> This is only for your first time and will be saved. You can update this later in settings. </h3>)
                 }
             </div>
 
