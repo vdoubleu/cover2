@@ -5,11 +5,10 @@
     align-items: center;
 
     /* circle */
-    border-radius: 50%;
+    border-radius: 1rem;
 
     /* size */
     width: 135px;
-    height: 135px;
 }
 
 .doneButton-text {
