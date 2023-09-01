@@ -8,7 +8,7 @@ function App() {
     useEffect(() => {
         const displayMode = getPWADisplayMode();
 
-        if (displayMode === 'browser') {
+        if (displayMode === 'browser' && !import.meta.env.VITE_REACT_APP_DEV) {
             setIsInstallPromotionVisible(true);
         }
     }, []);
