@@ -5,6 +5,7 @@ import DoneButton from "../../basic/DoneButton";
 import FloorInfo from "../PageManager/FloorInfo.ts";
 import type { CoverageState, CoverageFloorState } from "../PageManager";
 import logoText from "/assets/Logo-name.svg";
+import editIcon from "/assets/edit-icon.png";
 import "../common/common.css";
 import "./Review.css";
 
@@ -64,6 +65,8 @@ function Review(props: ReviewProps) {
 
         if (import.meta.env.VITE_REACT_APP_DEV) {
             console.log("Email sent!");
+            console.log("Email sent to: " + userInfo.email);
+            console.log("Email body: " + coverageInfoText);
             props.setCoverageState({});
             props.goToPage("done");
             return;
@@ -81,7 +84,7 @@ function Review(props: ReviewProps) {
                 accessToken: import.meta.env.VITE_REACT_APP_ACCESS_TOKEN,
                 template_params: {
                     "to_email": userInfo.email,
-                    "message": coverageInfoFull,
+                    "message": coverageInfoText,
                 },
             }),
         }).then((response) => {
@@ -130,7 +133,7 @@ function Review(props: ReviewProps) {
     const startTime = new Date(coverageInfo.startTime);
     const startTimeRounded = roundMinutes(startTime);
 
-    const floorInfoBlocks = Object.keys(FloorInfo).map((floorNameWithoutReview) => {
+    const singleFloorInfoBlock = (floorNameWithoutReview: string) => {
         const floorInfo = FloorInfo[floorNameWithoutReview];
 
         const coverageDataForFloor: CoverageFloorState | undefined = props.coverageState[floorNameWithoutReview];
@@ -142,20 +145,43 @@ function Review(props: ReviewProps) {
         const floorRooms = floorInfo.rooms.map((room: string) => (
             `${floorInfo.name} ${room}: ${coverageDataForFloor[room]}\n`
         )).reduce((prev: string, curr: string) => prev + curr, "");
-        
-        const notes = coverageDataForFloor["notes"] ? `${floorInfo.name} Notes:\n${coverageDataForFloor["notes"]}\n` : "";
+
+        const notes = coverageDataForFloor["notes"] ? `${floorInfo.name} Notes:\n${coverageDataForFloor["notes"]}` : "";
 
         return `${floorRooms}${notes}\n`;
+    }
+
+    const floorInfoText = Object.keys(FloorInfo).map((floorNameWithoutReview) => {
+        return singleFloorInfoBlock(floorNameWithoutReview) + "\n";
     }).reduce((prev, curr) => prev + curr, "");
 
-    const coverageInfoFull = (() => {
+    const coverageInfoText = (() => {
         const title = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n\n`;
 
         const time = `Time: ${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n`;
         const date = `Date: ${startTime.toLocaleDateString()}\n`;
         const CAs = `CAs on Sweep: ${userInfo.name} and ${coverageInfo.coverageBuddy}\n\n`;
 
-        return title + time + date + CAs + floorInfoBlocks;
+        return title + time + date + CAs + floorInfoText;
+    })();
+
+    // with edit button
+    const floorInfoEdit = Object.keys(FloorInfo).map((floorNameWithoutReview) => {
+        return (
+            <><div className="review-text-row">{singleFloorInfoBlock(floorNameWithoutReview)} <img src={editIcon} alt="Edit" className="review-edit-icon" onClick={() => props.goToPage(floorNameWithoutReview + "-review")} /> </div></>
+        );
+    });
+
+    const coverageInfoEdit = (() => {
+        const title = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n\n`;
+
+        const time = `Time: ${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n`;
+        const date = `Date: ${startTime.toLocaleDateString()}\n`;
+        const CAs = `CAs on Sweep: ${userInfo.name} and ${coverageInfo.coverageBuddy}\n\n`;
+
+        return (
+            <>{title}<br/>{time}<br/>{date}<br/>{CAs}<br/>{floorInfoEdit}</>
+        );
     })();
 
     return (
@@ -182,7 +208,7 @@ function Review(props: ReviewProps) {
 
             <div className="page-body">
                 <pre className="page-body-text review-information-body">
-                    {coverageInfoFull}
+                    {coverageInfoEdit}
                 </pre>
             </div>
 

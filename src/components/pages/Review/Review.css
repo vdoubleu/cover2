@@ -17,3 +17,14 @@
 
     margin: 2rem;
 }
+
+.review-edit-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.review-text-row {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-gap: 1rem;
+}
