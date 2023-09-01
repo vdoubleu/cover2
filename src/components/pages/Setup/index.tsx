@@ -21,7 +21,7 @@ function Setup(props: SetupProps) {
         const userInfo = localStorage.getItem("userInfo");
 
         if (!userInfo) {
-            setIsSetup(false);
+            setIsSetup(true);
             return;
         }
 
@@ -30,12 +30,12 @@ function Setup(props: SetupProps) {
             if (userInfoObj.name && userInfoObj.email) {
                 setFirstName(userInfoObj.name);
                 setEmail(userInfoObj.email);
-                setIsSetup(true);
-            } else {
                 setIsSetup(false);
+            } else {
+                setIsSetup(true);
             }
         } catch (e) {
-            setIsSetup(false);
+            setIsSetup(true);
         }
     }, []);
 
@@ -55,7 +55,7 @@ function Setup(props: SetupProps) {
         props.goToPage("home");
     }
 
-    const isDisabled = false;
+    const isDisabled = firstName === "" || email === "";
 
     return (
         <div className="page">
@@ -71,8 +71,8 @@ function Setup(props: SetupProps) {
                 <h2 className="page-subtitle-text"> Enter your information </h2>
                 {
                     isSetup 
-                    ? (<h3> Here you may update any of your saved values </h3>)
-                    : (<h3> This is only for your first time and will be saved. You can update this later in settings. </h3>)
+                    ? (<h3> This is only for your first time and will be saved. You can update this later in settings. </h3>)
+                    : (<h3> Here you may update any of your saved values </h3>)
                 }
             </div>
 
