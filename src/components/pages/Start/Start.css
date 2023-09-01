@@ -1,5 +1,5 @@
 .start-input {
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 
 .start-time-wrapper {
@@ -16,4 +16,8 @@
     display: flex;
     justify-content: center;
     margin-top: 6vh;
+}
+
+.start-subtitle {
+    margin-top: 5vh;
 }

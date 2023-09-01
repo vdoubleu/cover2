@@ -46,15 +46,13 @@ function Start(props: StartProps) {
 
     return (
         <div className="page">
-            <div className="page-header">
+            <div className="page-header page-header-multi">
                 <BackButton onClick={handleBack} />
+                <img src={logoText} alt="Logo" className="page-header-logo" />
+                <div className="page-back-filler" />
             </div>
 
-            <div className="page-title">
-                <img src={logoText} alt="Logo" className="page-logo" />
-            </div>
-
-            <div className="page-subtitle"> 
+            <div className="page-subtitle start-subtitle"> 
                 <h2 className="page-subtitle-text"> Start your coverage? </h2>
                 <h3> Let's get this party started!! 🎉🎉 </h3>
             </div>
