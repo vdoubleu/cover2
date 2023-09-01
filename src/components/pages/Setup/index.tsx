@@ -59,19 +59,17 @@ function Setup(props: SetupProps) {
 
     return (
         <div className="page">
-            <div className="page-header">
+            <div className="page-header page-header-multi">
                 <BackButton onClick={goBack} />
+                <img src={logoText} alt="Logo" className="page-header-logo" />
+                <div className="page-back-filler" />
             </div>
 
-            <div className="page-title">
-                <img src={logoText} alt="Logo" className="page-logo" />
-            </div>
-
-            <div className="page-subtitle"> 
+            <div className="page-subtitle setup-subtitle"> 
                 <h2 className="page-subtitle-text"> Enter your information </h2>
                 {
                     isSetup 
-                    ? (<h3> This is only for your first time and will be saved. You can update this later in settings. </h3>)
+                    ? (<h3> This is saved and can be updated later in settings. </h3>)
                     : (<h3> Here you may update any of your saved values </h3>)
                 }
             </div>
