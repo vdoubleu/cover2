@@ -39,7 +39,7 @@ function Floor(props: FloorProps) {
             newFloorState["notes"] = "";
             setFloorState(newFloorState);
         }
-    }, [props.floorNum, props.floorSide]);
+    }, [props.floorNum, props.floorSide, currFloorWithoutReview]);
 
     function handleBack() {
         if (props.isReview) {

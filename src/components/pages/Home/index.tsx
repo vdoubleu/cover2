@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import DoneButton from "../../basic/DoneButton";
+import type { CoverageState } from "../PageManager";
 import logo from "/assets/Logo.svg";
 import settingsIcon from "/assets/settings-icon.png";
 import "./Home.css";
@@ -8,7 +9,7 @@ import "../common/common.css";
 
 export type HomeProps = {
     goToPage: (page: string) => void;
-    setCoverageState: (coverageState: any) => void;
+    setCoverageState: (coverageState: CoverageState) => void;
 }
 
 function Home(props: HomeProps) {
