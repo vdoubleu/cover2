@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import BackButton from "../../basic/BackButton";
 import DoneButton from "../../basic/DoneButton";
@@ -133,7 +133,7 @@ function Review(props: ReviewProps) {
     const startTime = new Date(coverageInfo.startTime);
     const startTimeRounded = roundMinutes(startTime);
 
-    const singleFloorInfoBlock = (floorNameWithoutReview: string) => {
+    const singleFloorInfoBlock = (floorNameWithoutReview: string): string => {
         const floorInfo = FloorInfo[floorNameWithoutReview];
 
         const coverageDataForFloor: CoverageFloorState | undefined = props.coverageState[floorNameWithoutReview];
@@ -168,16 +168,16 @@ function Review(props: ReviewProps) {
     // with edit button
     const floorInfoEdit = Object.keys(FloorInfo).map((floorNameWithoutReview) => {
         return (
-            <><div className="review-text-row">{singleFloorInfoBlock(floorNameWithoutReview)} <img src={editIcon} alt="Edit" className="review-edit-icon" onClick={() => props.goToPage(floorNameWithoutReview + "-review")} /> </div></>
+            <React.Fragment key={floorNameWithoutReview + "-edit"}><div className="review-text-row">{singleFloorInfoBlock(floorNameWithoutReview)} <img src={editIcon} alt="Edit" className="review-edit-icon" onClick={() => props.goToPage(floorNameWithoutReview + "-review")} /> </div></React.Fragment>
         );
     });
 
-    const coverageInfoEdit = (() => {
-        const title = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n\n`;
+    const coverageInfoEdit: React.ReactElement = (() => {
+        const title: string = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n\n`;
 
-        const time = `Time: ${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n`;
-        const date = `Date: ${startTime.toLocaleDateString()}\n`;
-        const CAs = `CAs on Sweep: ${userInfo.name} and ${coverageInfo.coverageBuddy}\n\n`;
+        const time: string = `Time: ${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n`;
+        const date: string = `Date: ${startTime.toLocaleDateString()}\n`;
+        const CAs: string = `CAs on Sweep: ${userInfo.name} and ${coverageInfo.coverageBuddy}\n\n`;
 
         return (
             <>{title}<br/>{time}<br/>{date}<br/>{CAs}<br/>{floorInfoEdit}</>
@@ -185,7 +185,7 @@ function Review(props: ReviewProps) {
     })();
 
     return (
-        <div className="page-full">
+        <div className="page">
             <div className="page-header page-header-multi">
                 <BackButton onClick={handleBack} />
                 <img src={logoText} alt="Logo" className="page-header-logo" />

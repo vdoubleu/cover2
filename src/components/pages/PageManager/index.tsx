@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Home from "../Home";
 import Setup from "../Setup";
@@ -57,11 +57,15 @@ function PageManager() {
         return pageMap[currPage];
     })(currPage);
 
-    if (currPage.startsWith("floor-3") || currPage === "review") {
-        enableScroll();
-    } else {
-        disableScroll();
-    }
+    useEffect(() => {
+        const bodyHeight = document.body.clientHeight;
+        const windowHeight = window.innerHeight;
+        if (bodyHeight > windowHeight) {
+            enableScroll();
+        } else {
+            disableScroll();
+        }
+    });
 
     return (
         <>
