@@ -17,6 +17,9 @@ export type ReviewProps = {
 
 function Review(props: ReviewProps) {
     const [endTime, setEndTime] = useState(new Date());
+    const [hasEmailedThemself, setHasEmailedThemself] = useState(false);
+    const [hasCopiedToClipboard, setHasCopiedToClipboard] = useState(false);
+    const [emailSending, setEmailSending] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -57,9 +60,20 @@ function Review(props: ReviewProps) {
         props.goToPage("floor-3-East-no");
     }
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(coverageInfoText);
+        setHasCopiedToClipboard(true);
+    }
+
     const sendEmail = () => {
         if (!userInfo || !coverageInfo) {
             alert("Something went wrong. Please contact VW for help. Missing userinfo or coverageinfo");
+            return;
+        }
+
+        const confirmation = window.confirm("Are you sure you want to email this to: " + userInfo.email + "?");
+
+        if (!confirmation) {
             return;
         }
 
@@ -67,39 +81,45 @@ function Review(props: ReviewProps) {
             console.log("Email sent!");
             console.log("Email sent to: " + userInfo.email);
             console.log("Email body: " + coverageInfoText);
-            props.setCoverageState({});
-            props.goToPage("done");
-            return;
+        } else {
+            setEmailSending(true);
+            fetch("https://api.emailjs.com/api/v1.0/email/send", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    service_id: import.meta.env.VITE_REACT_APP_SERVICE_ID,
+                    template_id: import.meta.env.VITE_REACT_APP_TEMPLATE_ID,
+                    user_id: import.meta.env.VITE_REACT_APP_USER_ID,
+                    accessToken: import.meta.env.VITE_REACT_APP_ACCESS_TOKEN,
+                    template_params: {
+                        "to_email": userInfo.email,
+                        "message": coverageInfoText,
+                    },
+                }),
+            }).then((response) => {
+                if (response.status === 200) {
+                    console.log("Email sent!");
+                    setEmailSending(false);
+                } else {
+                    console.log("Email failed to send.");
+                    setEmailSending(false);
+                    alert("Email failed to send. Please contact VW for help.");
+                }
+            }).catch((error) => {
+                console.log("Email failed to send. Error: " + error);
+                setEmailSending(false);
+                alert("Email failed to send. Please contact VW for help.");
+            });
         }
 
-        fetch("https://api.emailjs.com/api/v1.0/email/send", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                service_id: import.meta.env.VITE_REACT_APP_SERVICE_ID,
-                template_id: import.meta.env.VITE_REACT_APP_TEMPLATE_ID,
-                user_id: import.meta.env.VITE_REACT_APP_USER_ID,
-                accessToken: import.meta.env.VITE_REACT_APP_ACCESS_TOKEN,
-                template_params: {
-                    "to_email": userInfo.email,
-                    "message": coverageInfoText,
-                },
-            }),
-        }).then((response) => {
-            if (response.status === 200) {
-                console.log("Email sent!");
-                props.setCoverageState({});
-                props.goToPage("done");
-            } else {
-                console.log("Email failed to send.");
-                alert("Email failed to send. Please contact VW for help.");
-            }
-        }).catch((error) => {
-            console.log("Email failed to send. Error: " + error);
-            alert("Email failed to send. Please contact VW for help.");
-        });
+        setHasEmailedThemself(true);
+    }
+
+    const nextPage = () => {
+        props.setCoverageState({});
+        props.goToPage("done");
     }
 
     const roundMinutes = (oldDate: Date) => {
@@ -155,14 +175,19 @@ function Review(props: ReviewProps) {
         return singleFloorInfoBlock(floorNameWithoutReview) + "\n";
     }).reduce((prev, curr) => prev + curr, "");
 
-    const coverageInfoText = (() => {
-        const title = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n\n`;
+    const coverageMetadata = (() => {
+        const title = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n`;
 
         const time = `Time: ${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n`;
         const date = `Date: ${startTime.toLocaleDateString()}\n`;
         const CAs = `CAs on Sweep: ${userInfo.name} and ${coverageInfo.coverageBuddy}\n\n`;
 
-        return title + time + date + CAs + floorInfoText;
+        return title + time + date + CAs + "\n";
+    })();
+
+    const coverageInfoText = (() => {
+
+        return coverageMetadata + floorInfoText;
     })();
 
     // with edit button
@@ -172,17 +197,7 @@ function Review(props: ReviewProps) {
         );
     });
 
-    const coverageInfoEdit: React.ReactElement = (() => {
-        const title: string = `${startTimeRounded.toLocaleTimeString([], {hour: '2-digit'})} Sweep Notes\n\n`;
-
-        const time: string = `Time: ${startTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n`;
-        const date: string = `Date: ${startTime.toLocaleDateString()}\n`;
-        const CAs: string = `CAs on Sweep: ${userInfo.name} and ${coverageInfo.coverageBuddy}\n\n`;
-
-        return (
-            <>{title}<br/>{time}<br/>{date}<br/>{CAs}<br/>{floorInfoEdit}</>
-        );
-    })();
+    const coverageInfoEdit: React.ReactElement = <>{coverageMetadata}{floorInfoEdit}</>;
 
     return (
         <div className="page">
@@ -194,12 +209,7 @@ function Review(props: ReviewProps) {
 
             <div className="page-subtitle review-subtitle">
                 <h2 className="page-subtitle-text"> Review </h2>
-                <h3> Scroll through and double check everything. If it looks good, hit done at the very bottom to email yourself the info. </h3>
-            </div>
-
-            <div className="page-subtitle page-subtitle-slim review-email">
-                <h2 className="page-subtitle-text"> Email </h2>
-                <h3> {userInfo.email} </h3>
+                <h3> Scroll through and double check everything. If it looks good, you can email it to yourself or copy to clipboard. </h3>
             </div>
 
             <div className="page-subtitle page-subtitle-slim">
@@ -212,11 +222,25 @@ function Review(props: ReviewProps) {
                 </pre>
             </div>
 
+            <div className="page-subtitle review-save-buttons">
+                <DoneButton
+                    text="Copy"
+                    onClick={copyToClipboard}
+                    disabled={hasCopiedToClipboard}
+                />
+
+                <DoneButton
+                    text={emailSending ? "..." : "Email"}
+                    onClick={sendEmail}
+                    disabled={hasEmailedThemself}
+                />
+            </div>
+
             <div className="review-button">
                 <DoneButton 
-                    text="Send"
-                    onClick={sendEmail}
-                    disabled={false}
+                    text="Done"
+                    onClick={nextPage}
+                    disabled={!(hasCopiedToClipboard || hasEmailedThemself)}
                 />
             </div>
         </div>

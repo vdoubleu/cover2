@@ -28,3 +28,9 @@
     grid-template-columns: 4fr 1fr;
     grid-gap: 1rem;
 }
+
+.review-save-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}

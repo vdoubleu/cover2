@@ -11,7 +11,7 @@ export type SimpleInputProps = {
 function SimpleInput(props: SimpleInputProps) {
     const inputType = props.type || 'text';
 
-    const pattern = props.type === 'number' ? '[0-9]*' : undefined;
+    const pattern = props.type === 'number' ? '[0-9]*' : props.type === 'email' ? '' : undefined;
     const inputMode = props.type === 'number' ? 'numeric' : undefined;
 
     return (
