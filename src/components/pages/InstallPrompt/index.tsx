@@ -9,7 +9,12 @@ function InstallPrompt() {
             </div>
 
             <div className="installprompt-body">
-                Please Install the App for a better experience.
+                Please use <a href="https://cover3.vercel.app/"> this version </a> of cover. This newer version of cover will have all the old features as well as a bunch of new ones. If you wish to continue using this version, please follow the below steps.
+
+                <br />
+                <br />
+
+                Please Install the Cover for a better experience.
 
                 <br />
                 <br />

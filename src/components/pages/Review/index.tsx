@@ -186,7 +186,6 @@ function Review(props: ReviewProps) {
     })();
 
     const coverageInfoText = (() => {
-
         return coverageMetadata + floorInfoText;
     })();
 
